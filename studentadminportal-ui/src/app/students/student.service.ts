@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { student } from '../models/api-models/student.model';
 import { UpdateStudentRequest } from '../models/api-models/update-student-request.model';
+import { addStudentRequest } from '../models/api-models/add-student-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,20 @@ export class StudentService {
 
   deleteStudent(studentId: string): Observable<student>{
     return this.httpClient.delete<student>(this.baseApiUrl + '/students/' + studentId);
+  }
+
+  addStudent(studentRequest: student): Observable<student>{
+    const addStudentRequest: addStudentRequest = {
+      firstName: studentRequest.firstName,
+      lastName: studentRequest.lastName,
+      dateOfBirth: studentRequest.dateOfBirth,
+      email: studentRequest.email,
+      mobile: studentRequest.mobile,
+      genderId: studentRequest.genderId,
+      physicalAddress: studentRequest.address.physicalAddress,
+      postalAddress: studentRequest.address.postalAddress
+    }
+
+    return this.httpClient.post<student>(this.baseApiUrl + '/students/add', addStudentRequest);
   }
 }
